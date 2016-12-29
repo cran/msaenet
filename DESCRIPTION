@@ -1,12 +1,14 @@
 Package: msaenet
 Type: Package
 Title: Multi-Step Adaptive Elastic-Net
-Version: 1.0
-Author: Nan Xiao <me@nanx.me>
+Version: 1.1
+Authors@R: c(person("Nan", "Xiao", email = "me@nanx.me", role = c("aut", "cre")))
 Maintainer: Nan Xiao <me@nanx.me>
-Description: Multi-step adaptive elastic-net (MSAENet) algorithm for feature selection in high-dimensional regressions.
-License: GPL
-URL: http://msaenet.com
+Description: Multi-step adaptive elastic-net (MSAENet) algorithm for
+    feature selection in high-dimensional regressions proposed in
+    Xiao and Xu (2015) <DOI:10.1080/00949655.2015.1016944>.
+License: GPL-3 | file LICENSE
+URL: http://msaenet.com, https://github.com/road2stat/msaenet
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
@@ -16,6 +18,7 @@ Imports: glmnet, foreach, mvtnorm, Matrix, lattice
 Suggests: knitr, rmarkdown, doParallel
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-09-20 06:06:24 UTC; jimmy
+Packaged: 2016-12-28 21:04:22 UTC; jimmy
+Author: Nan Xiao [aut, cre]
 Repository: CRAN
-Date/Publication: 2016-09-20 09:21:35
+Date/Publication: 2016-12-29 01:09:06
