@@ -5,8 +5,9 @@
 [![CRAN Version](http://www.r-pkg.org/badges/version/msaenet)](https://cran.r-project.org/package=msaenet)
 [![Downloads from the RStudio CRAN mirror](http://cranlogs.r-pkg.org/badges/msaenet)](https://cran.r-project.org/package=msaenet)
 
-`msaenet` implements the multi-step adaptive elastic-net (MSAENet) algorithm for feature selection in high-dimensional regressions proposed in
-    Xiao and Xu (2015) <[DOI:10.1080/00949655.2015.1016944](http://www.tandfonline.com/doi/full/10.1080/00949655.2015.1016944)> ([PDF](https://drive.google.com/file/d/0B1YdO4YnMkAxeFUtZ3FLY1dLN2s/view)).
+`msaenet` implements the multi-step adaptive elastic-net (MSAENet) algorithm for feature selection in high-dimensional regressions proposed in Xiao and Xu (2015) <[DOI:10.1080/00949655.2015.1016944](http://www.tandfonline.com/doi/full/10.1080/00949655.2015.1016944)> ([PDF](https://drive.google.com/file/d/0B1YdO4YnMkAxeFUtZ3FLY1dLN2s/view)).
+
+Multi-step adaptive estimation based on MCP-net or SCAD-net is also supported.
 
 ## Paper Citation
 
@@ -29,6 +30,23 @@ BibTeX entry:
 }
 ```
 
+## Gallery
+
+### Adaptive Elastic-Net / Multi-Step Adaptive Elastic-Net
+
+<img src="http://msaenet.com/img/aenet.png" width="49%" alt="aenet">
+<img src="http://msaenet.com/img/msaenet.png" width="49%" alt="msaenet">
+
+### Adaptive MCP-Net / Multi-Step Adaptive MCP-Net
+
+<img src="http://msaenet.com/img/amnet.png" width="49%" alt="amnet">
+<img src="http://msaenet.com/img/msamnet.png" width="49%" alt="msamnet">
+
+### Adaptive SCAD-Net / Multi-Step Adaptive SCAD-Net
+
+<img src="http://msaenet.com/img/asnet.png" width="49%" alt="asnet">
+<img src="http://msaenet.com/img/msasnet.png" width="49%" alt="msasnet">
+
 ## Installation
 
 To download and install `msaenet` from CRAN:
@@ -44,10 +62,4 @@ Or try the development version on GitHub:
 devtools::install_github("road2stat/msaenet")
 ```
 
-To load the package in R, simply use
-
-```r
-library("msaenet")
-```
-
-and you are all set. See [the vignette](http://msaenet.com/doc/) (can be opened with `vignette("msaenet")` in R) for a quick-start guide.
+See [the vignette](http://msaenet.com/doc/) (can be opened with `vignette("msaenet")` in R) for a quick-start guide.

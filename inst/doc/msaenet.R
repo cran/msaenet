@@ -17,6 +17,7 @@ msaenet.fit = msaenet(dat$x.tr, dat$y.tr,
 
 ## ------------------------------------------------------------------------
 msaenet.nzv(msaenet.fit)
+msaenet.nzv.all(msaenet.fit)
 msaenet.fp(msaenet.fit, 1:5)
 msaenet.tp(msaenet.fit, 1:5)
 

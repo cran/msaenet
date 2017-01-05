@@ -12,7 +12,7 @@
 
 <meta name="author" content="Nan Xiao &lt;http://nanx.me&gt;" />
 
-<meta name="date" content="2016-12-28" />
+<meta name="date" content="2017-01-05" />
 
 <title>A Quick Introduction to msaenet</title>
 
@@ -71,7 +71,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Quick Introduction to msaenet</h1>
 <h4 class="author"><em>Nan Xiao &lt;<a href="http://nanx.me" class="uri">http://nanx.me</a>&gt;</em></h4>
-<h4 class="date"><em>2016-12-28</em></h4>
+<h4 class="date"><em>2017-01-05</em></h4>
 
 
 <div id="TOC">
@@ -108,6 +108,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let’s inspect the fitted model, by looking into the selected variables (variables with non-zero coefficients), and the number of false positive selections/true positive selections:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.nzv</span>(msaenet.fit)</code></pre></div>
 <pre><code>##  [1]   2   3   4   5  35 114 171 312 379 441 464</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.nzv.all</span>(msaenet.fit)</code></pre></div>
+<pre><code>## [[1]]
+##  [1]   1   2   3   4   5   6  33  35  49  54  74 114 135 171 177 178 226
+## [18] 244 262 263 312 358 363 379 388 441 463 464 500
+## 
+## [[2]]
+##  [1]   1   2   3   4   5  35  49 114 171 263 312 379 441 464 500
+## 
+## [[3]]
+##  [1]   2   3   4   5  35  49 114 171 312 379 441 464 500
+## 
+## [[4]]
+##  [1]   2   3   4   5  35 114 171 312 379 441 464
+## 
+## [[5]]
+##  [1]   2   3   4   5  35 114 171 312 379 441 464</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.fp</span>(msaenet.fit, <span class="dv">1</span>:<span class="dv">5</span>)</code></pre></div>
 <pre><code>## [1] 7</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.tp</span>(msaenet.fit, <span class="dv">1</span>:<span class="dv">5</span>)</code></pre></div>
