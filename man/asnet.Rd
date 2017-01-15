@@ -6,8 +6,8 @@
 \usage{
 asnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
   init = c("snet", "ridge"), nfolds = 5L, gammas = c(2.01, 2.3, 3.7, 200),
-  alphas = seq(0.05, 0.95, 0.05), gamma = 1, seed = 1001,
-  parallel = FALSE, verbose = FALSE)
+  alphas = seq(0.05, 0.95, 0.05), eps = 1e-04, max.iter = 10000L,
+  gamma = 1, seed = 1001, parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{Data matrix.}
@@ -28,6 +28,10 @@ estimation step. Can be \code{"snet"} or \code{"ridge"}.}
 \item{gammas}{Vector of candidate \code{gamma}s to use in SCAD-Net.}
 
 \item{alphas}{Vector of candidate \code{alpha}s to use in SCAD-Net.}
+
+\item{eps}{Convergence threshhold to use in SCAD-net.}
+
+\item{max.iter}{Maximum number of iterations to use in SCAD-net.}
 
 \item{gamma}{Scaling factor for adaptive weights:
 \code{weights = coefs^(-gamma)}.}
@@ -62,6 +66,7 @@ msaenet.fp(asnet.fit, 1:5)
 msaenet.tp(asnet.fit, 1:5)
 asnet.pred = predict(asnet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, asnet.pred)
+plot(asnet.fit)
 }
 \author{
 Nan Xiao <\url{http://nanx.me}>
