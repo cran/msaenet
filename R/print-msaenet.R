@@ -8,7 +8,7 @@
 #'
 #' @method print msaenet
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @importFrom utils capture.output
 #'
@@ -31,7 +31,7 @@ print.msaenet = function(x, ...) {
                            collapse = '\n')), '\n')
 
   if (.is.ncvreg(x$'model')) {
-    model.info = data.frame(.ncvdf(x$'model'),
+    model.info = data.frame(.df.ncvreg(x$'model'),
                             x$'model'$'lambda',
                             x$'model'$'gamma',
                             x$'model'$'alpha')

@@ -4,20 +4,26 @@
 #'
 #' @param x Data matrix.
 #' @param y Response vector if \code{family} is \code{"gaussian"},
-#' \code{"binomial"} or \code{"poisson"}.
-#' If \code{family} is \code{"cox"}, a response matrix made by
-#' \code{\link[survival]{Surv}}.
+#' \code{"binomial"}, or \code{"poisson"}. If \code{family} is
+#' \code{"cox"}, a response matrix created by \code{\link[survival]{Surv}}.
 #' @param family Model family, can be \code{"gaussian"},
 #' \code{"binomial"}, \code{"poisson"}, or \code{"cox"}.
 #' @param init Type of the penalty used in the initial
 #' estimation step. Can be \code{"mnet"} or \code{"ridge"}.
-#' @param nfolds Fold numbers of cross-validation.
-#' @param gammas Vector of candidate \code{gamma}s to use in MCP-Net.
+#' @param gammas Vector of candidate \code{gamma}s (the concavity parameter)
+#' to use in MCP-Net. Default is 3.
 #' @param alphas Vector of candidate \code{alpha}s to use in MCP-Net.
+#' @param tune Parameter tuning method for each estimation step.
+#' Possible options are \code{"cv"}, \code{"ebic"}, \code{"bic"},
+#' and \code{"aic"}. Default is \code{"cv"}.
+#' @param nfolds Fold numbers of cross-validation when \code{tune = "cv"}.
+#' @param ebic.gamma Parameter for Extended BIC penalizing
+#' size of the model space when \code{tune = "ebic"},
+#' default is \code{1}. For details, see Chen and Chen (2008).
+#' @param scale Scaling factor for adaptive weights:
+#' \code{weights = coefficients^(-scale)}.
 #' @param eps Convergence threshhold to use in MCP-net.
 #' @param max.iter Maximum number of iterations to use in MCP-net.
-#' @param gamma Scaling factor for adaptive weights:
-#' \code{weights = coefs^(-gamma)}.
 #' @param seed Random seed for cross-validation fold division.
 #' @param parallel Logical. Enable parallel parameter tuning or not,
 #' default is {FALSE}. To enable parallel tuning, load the
@@ -25,10 +31,10 @@
 #' with the number of CPU cores before calling this function.
 #' @param verbose Should we print out the estimation progress?
 #'
-#' @return List of coefficients \code{beta} and
-#' \code{ncvreg} model object \code{model}.
+#' @return List of model coefficients, \code{ncvreg} model object,
+#' and the optimal parameter set.
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @importFrom ncvreg ncvreg ncvsurv
 #' @importFrom Matrix Matrix
@@ -41,7 +47,7 @@
 #'                            seed = 1001)
 #'
 #' amnet.fit = amnet(dat$x.tr, dat$y.tr,
-#'                   gammas = 3, alphas = seq(0.2, 0.8, 0.2), seed = 1002)
+#'                   alphas = seq(0.2, 0.8, 0.2), seed = 1002)
 #'
 #' print(amnet.fit)
 #' msaenet.nzv(amnet.fit)
@@ -54,94 +60,102 @@
 amnet = function(x, y,
                  family = c('gaussian', 'binomial', 'poisson', 'cox'),
                  init = c('mnet', 'ridge'),
+                 gammas = 3, alphas = seq(0.05, 0.95, 0.05),
+                 tune = c('cv', 'ebic', 'bic', 'aic'),
                  nfolds = 5L,
-                 gammas = c(1.01, 1.7, 3, 100), alphas = seq(0.05, 0.95, 0.05),
+                 ebic.gamma = 1,
+                 scale = 1,
                  eps = 1e-4, max.iter = 10000L,
-                 gamma = 1,
                  seed = 1001, parallel = FALSE, verbose = FALSE) {
 
   family = match.arg(family)
-  init = match.arg(init)
-  call = match.call()
-  nvar = ncol(x)
+  init   = match.arg(init)
+  tune   = match.arg(tune)
+  call   = match.call()
+  nvar   = ncol(x)
 
   if (verbose) cat('Starting step 1 ...\n')
 
   if (init == 'mnet') {
-    mnet.cv = msaenet.tune.ncvreg(x, y, penalty = 'MCP',
-                                  nfolds = nfolds,
-                                  family = family,
+    mnet.cv = msaenet.tune.ncvreg(x = x, y = y, family = family, penalty = 'MCP',
                                   gammas = gammas, alphas = alphas,
+                                  tune = tune,
+                                  nfolds = nfolds,
+                                  ebic.gamma = ebic.gamma,
                                   eps = eps, max.iter = max.iter,
                                   seed = seed, parallel = parallel)
   }
 
   if (init == 'ridge') {
-    mnet.cv = msaenet.tune.ncvreg(x, y, penalty = 'MCP',
-                                  nfolds = nfolds,
-                                  family = family,
+    mnet.cv = msaenet.tune.ncvreg(x = x, y = y, family = family, penalty = 'MCP',
                                   gammas = gammas, alphas = 1e-16,
+                                  tune = tune,
+                                  nfolds = nfolds,
+                                  ebic.gamma = ebic.gamma,
                                   eps = eps, max.iter = max.iter,
                                   seed = seed, parallel = parallel)
   }
 
-  best.gamma.mnet  = mnet.cv$'best.gamma'
-  best.alpha.mnet  = mnet.cv$'best.alpha'
-  best.lambda.mnet = mnet.cv$'best.model'$'lambda.min'
+  best.gamma.mnet     = mnet.cv$'best.gamma'
+  best.alpha.mnet     = mnet.cv$'best.alpha'
+  best.lambda.mnet    = mnet.cv$'best.lambda'
+  step.criterion.mnet = mnet.cv$'step.criterion'
 
-  mnet.full = .ncvnet(x, y, penalty = 'MCP',
+  mnet.full = .ncvnet(x = x, y = y, family = family, penalty = 'MCP',
                       gamma  = best.gamma.mnet,
                       alpha  = best.alpha.mnet,
                       lambda = best.lambda.mnet,
-                      family = family,
                       eps = eps, max.iter = max.iter)
 
-  bhat = .ncv.coef(mnet.full, nvar)
+  bhat = .coef.ncvreg(mnet.full, nvar)
   if (all(bhat == 0)) bhat = rep(.Machine$double.eps * 2, length(bhat))
 
-  adpen = (pmax(abs(bhat), .Machine$double.eps))^(-gamma)
+  adpen = (pmax(abs(bhat), .Machine$double.eps))^(-scale)
 
   if (verbose) cat('Starting step 2 ...\n')
 
-  amnet.cv = msaenet.tune.ncvreg(x, y, penalty = 'MCP',
-                                 nfolds = nfolds,
-                                 family = family,
-                                 penalty.factor = adpen,
+  amnet.cv = msaenet.tune.ncvreg(x = x, y = y, family = family, penalty = 'MCP',
                                  gammas = gammas, alphas = alphas,
+                                 tune = tune,
+                                 nfolds = nfolds,
+                                 ebic.gamma = ebic.gamma,
                                  eps = eps, max.iter = max.iter,
-                                 seed = seed + 1L, parallel = parallel)
+                                 seed = seed + 1L, parallel = parallel,
+                                 penalty.factor = adpen)
 
-  best.gamma.amnet  = amnet.cv$'best.gamma'
-  best.alpha.amnet  = amnet.cv$'best.alpha'
-  best.lambda.amnet = amnet.cv$'best.model'$'lambda.min'
+  best.gamma.amnet     = amnet.cv$'best.gamma'
+  best.alpha.amnet     = amnet.cv$'best.alpha'
+  best.lambda.amnet    = amnet.cv$'best.lambda'
+  step.criterion.amnet = amnet.cv$'step.criterion'
 
-  amnet.full = .ncvnet(x, y, penalty = 'MCP',
-                       penalty.factor = adpen,
+  amnet.full = .ncvnet(x = x, y = y, family = family, penalty = 'MCP',
                        gamma  = best.gamma.amnet,
                        alpha  = best.alpha.amnet,
                        lambda = best.lambda.amnet,
-                       family = family,
-                       eps = eps, max.iter = max.iter)
+                       eps = eps, max.iter = max.iter,
+                       penalty.factor = adpen)
 
   # final beta stored as sparse matrix
-  bhat.full  = Matrix(.ncv.coef(amnet.full, nvar), sparse = TRUE)
-  bhat.first = Matrix(.ncv.coef(mnet.full,  nvar), sparse = TRUE)
+  bhat.full  = Matrix(.coef.ncvreg(amnet.full, nvar), sparse = TRUE)
+  bhat.first = Matrix(.coef.ncvreg(mnet.full,  nvar), sparse = TRUE)
 
   amnet.model = list('beta'  = bhat.full,
                      'model' = amnet.full,
                      'beta.first'  = bhat.first,
                      'model.first' = mnet.full,
-                     'best.alpha.mnet'   = best.alpha.mnet,
-                     'best.alpha.amnet'  = best.alpha.amnet,
-                     'best.lambda.mnet'  = best.lambda.mnet,
-                     'best.lambda.amnet' = best.lambda.amnet,
-                     'best.gamma.mnet'   = best.gamma.mnet,
-                     'best.gamma.amnet'  = best.gamma.amnet,
+                     'best.alpha.mnet'      = best.alpha.mnet,
+                     'best.alpha.amnet'     = best.alpha.amnet,
+                     'best.lambda.mnet'     = best.lambda.mnet,
+                     'best.lambda.amnet'    = best.lambda.amnet,
+                     'best.gamma.mnet'      = best.gamma.mnet,
+                     'best.gamma.amnet'     = best.gamma.amnet,
+                     'step.criterion'       = c(step.criterion.mnet,
+                                                step.criterion.amnet),
                      'adpen' = adpen,
                      'seed'  = seed,
                      'call'  = call)
 
   class(amnet.model) = c('msaenet', 'msaenet.amnet')
-  return(amnet.model)
+  amnet.model
 
 }

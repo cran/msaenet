@@ -5,17 +5,17 @@
 \title{Adaptive SCAD-Net}
 \usage{
 asnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("snet", "ridge"), nfolds = 5L, gammas = c(2.01, 2.3, 3.7, 200),
-  alphas = seq(0.05, 0.95, 0.05), eps = 1e-04, max.iter = 10000L,
-  gamma = 1, seed = 1001, parallel = FALSE, verbose = FALSE)
+  init = c("snet", "ridge"), gammas = 3.7, alphas = seq(0.05, 0.95, 0.05),
+  tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L, ebic.gamma = 1,
+  scale = 1, eps = 1e-04, max.iter = 10000L, seed = 1001,
+  parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{Data matrix.}
 
 \item{y}{Response vector if \code{family} is \code{"gaussian"},
-\code{"binomial"} or \code{"poisson"}.
-If \code{family} is \code{"cox"}, a response matrix made by
-\code{\link[survival]{Surv}}.}
+\code{"binomial"}, or \code{"poisson"}. If \code{family} is
+\code{"cox"}, a response matrix created by \code{\link[survival]{Surv}}.}
 
 \item{family}{Model family, can be \code{"gaussian"},
 \code{"binomial"}, \code{"poisson"}, or \code{"cox"}.}
@@ -23,18 +23,27 @@ If \code{family} is \code{"cox"}, a response matrix made by
 \item{init}{Type of the penalty used in the initial
 estimation step. Can be \code{"snet"} or \code{"ridge"}.}
 
-\item{nfolds}{Fold numbers of cross-validation.}
-
-\item{gammas}{Vector of candidate \code{gamma}s to use in SCAD-Net.}
+\item{gammas}{Vector of candidate \code{gamma}s (the concavity parameter)
+to use in SCAD-Net. Default is 3.7.}
 
 \item{alphas}{Vector of candidate \code{alpha}s to use in SCAD-Net.}
+
+\item{tune}{Parameter tuning method for each estimation step.
+Possible options are \code{"cv"}, \code{"ebic"}, \code{"bic"},
+and \code{"aic"}. Default is \code{"cv"}.}
+
+\item{nfolds}{Fold numbers of cross-validation when \code{tune = "cv"}.}
+
+\item{ebic.gamma}{Parameter for Extended BIC penalizing
+size of the model space when \code{tune = "ebic"},
+default is \code{1}. For details, see Chen and Chen (2008).}
+
+\item{scale}{Scaling factor for adaptive weights:
+\code{weights = coefficients^(-scale)}.}
 
 \item{eps}{Convergence threshhold to use in SCAD-net.}
 
 \item{max.iter}{Maximum number of iterations to use in SCAD-net.}
-
-\item{gamma}{Scaling factor for adaptive weights:
-\code{weights = coefs^(-gamma)}.}
 
 \item{seed}{Random seed for cross-validation fold division.}
 
@@ -46,8 +55,8 @@ with the number of CPU cores before calling this function.}
 \item{verbose}{Should we print out the estimation progress?}
 }
 \value{
-List of coefficients \code{beta} and
-\code{ncvreg} model object \code{model}.
+List of model coefficients, \code{ncvreg} model object,
+and the optimal parameter set.
 }
 \description{
 Adaptive SCAD-Net
@@ -58,7 +67,7 @@ dat = msaenet.sim.gaussian(n = 150, p = 500, rho = 0.6,
                            seed = 1001)
 
 asnet.fit = asnet(dat$x.tr, dat$y.tr,
-                  gammas = 3.7, alphas = seq(0.2, 0.8, 0.2), seed = 1002)
+                  alphas = seq(0.2, 0.8, 0.2), seed = 1002)
 
 print(asnet.fit)
 msaenet.nzv(asnet.fit)
@@ -69,6 +78,6 @@ msaenet.rmse(dat$y.te, asnet.pred)
 plot(asnet.fit)
 }
 \author{
-Nan Xiao <\url{http://nanx.me}>
+Nan Xiao <\url{https://nanx.me}>
 }
 

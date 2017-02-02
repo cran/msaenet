@@ -13,7 +13,7 @@
 #'
 #' @return List of \code{x.tr}, \code{x.te}, \code{y.tr}, and \code{y.te}.
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @references
 #' Nan Xiao and Qing-Song Xu. (2015). Multi-step adaptive elastic-net:
@@ -64,9 +64,9 @@ msaenet.sim.gaussian = function(n = 300, p = 500,
   x.te = X[-tr.row, , drop = FALSE]
   y.te = y[-tr.row, , drop = FALSE]
 
-  return(list('x.tr' = x.tr, 'y.tr' = y.tr,
-              'x.te' = x.te, 'y.te' = y.te,
-              'call' = call))
+  list('x.tr' = x.tr, 'y.tr' = y.tr,
+       'x.te' = x.te, 'y.te' = y.te,
+       'call' = call)
 
 }
 
@@ -84,7 +84,7 @@ msaenet.sim.gaussian = function(n = 300, p = 500,
 #'
 #' @return List of \code{x.tr}, \code{x.te}, \code{y.tr}, and \code{y.te}.
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @importFrom mvtnorm rmvnorm
 #' @importFrom stats rnorm
@@ -135,9 +135,9 @@ msaenet.sim.binomial = function(n = 300, p = 500,
   x.te = X[-tr.row, , drop = FALSE]
   y.te = y[-tr.row, , drop = FALSE]
 
-  return(list('x.tr' = x.tr, 'y.tr' = y.tr,
-              'x.te' = x.te, 'y.te' = y.te,
-              'call' = call))
+  list('x.tr' = x.tr, 'y.tr' = y.tr,
+       'x.te' = x.te, 'y.te' = y.te,
+       'call' = call)
 
 }
 
@@ -155,7 +155,7 @@ msaenet.sim.binomial = function(n = 300, p = 500,
 #'
 #' @return List of \code{x.tr}, \code{x.te}, \code{y.tr}, and \code{y.te}.
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @importFrom mvtnorm rmvnorm
 #' @importFrom stats rnorm
@@ -203,9 +203,9 @@ msaenet.sim.poisson = function(n = 300, p = 500,
   x.te = X[-tr.row, , drop = FALSE]
   y.te = y[-tr.row, , drop = FALSE]
 
-  return(list('x.tr' = x.tr, 'y.tr' = y.tr,
-              'x.te' = x.te, 'y.te' = y.te,
-              'call' = call))
+  list('x.tr' = x.tr, 'y.tr' = y.tr,
+       'x.te' = x.te, 'y.te' = y.te,
+       'call' = call)
 
 }
 
@@ -223,7 +223,7 @@ msaenet.sim.poisson = function(n = 300, p = 500,
 #'
 #' @return List of \code{x.tr}, \code{x.te}, \code{y.tr}, and \code{y.te}.
 #'
-#' @author Nan Xiao <\url{http://nanx.me}>
+#' @author Nan Xiao <\url{https://nanx.me}>
 #'
 #' @references
 #' Simon, N., Friedman, J., Hastie, T., & Tibshirani, R. (2011).
@@ -284,8 +284,8 @@ msaenet.sim.cox = function(n = 300, p = 500,
   x.te = X[-tr.row, , drop = FALSE]
   y.te = y[-tr.row, , drop = FALSE]
 
-  return(list('x.tr' = x.tr, 'y.tr' = y.tr,
-              'x.te' = x.te, 'y.te' = y.te,
-              'call' = call))
+  list('x.tr' = x.tr, 'y.tr' = y.tr,
+       'x.te' = x.te, 'y.te' = y.te,
+       'call' = call)
 
 }

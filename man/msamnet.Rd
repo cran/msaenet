@@ -5,18 +5,18 @@
 \title{Multi-Step Adaptive MCP-Net}
 \usage{
 msamnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("mnet", "ridge"), nsteps = 2L, nfolds = 5L, gammas = c(1.01,
-  1.7, 3, 100), alphas = seq(0.05, 0.95, 0.05), eps = 1e-04,
-  max.iter = 10000L, gamma = 1, seed = 1001, parallel = FALSE,
-  verbose = FALSE)
+  init = c("mnet", "ridge"), gammas = 3, alphas = seq(0.05, 0.95, 0.05),
+  tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L, ebic.gamma = 1,
+  nsteps = 2L, tune.nsteps = c("max", "ebic", "bic", "aic"),
+  ebic.gamma.nsteps = 1, scale = 1, eps = 1e-04, max.iter = 10000L,
+  seed = 1001, parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{Data matrix.}
 
 \item{y}{Response vector if \code{family} is \code{"gaussian"},
-\code{"binomial"} or \code{"poisson"}.
-If \code{family} is \code{"cox"}, a response matrix made by
-\code{\link[survival]{Surv}}.}
+\code{"binomial"}, or \code{"poisson"}. If \code{family} is
+\code{"cox"}, a response matrix created by \code{\link[survival]{Surv}}.}
 
 \item{family}{Model family, can be \code{"gaussian"},
 \code{"binomial"}, \code{"poisson"}, or \code{"cox"}.}
@@ -24,21 +24,41 @@ If \code{family} is \code{"cox"}, a response matrix made by
 \item{init}{Type of the penalty used in the initial
 estimation step. Can be \code{"mnet"} or \code{"ridge"}.}
 
-\item{nsteps}{How many adaptive estimation steps? At least 2.
-We assume adaptive MCP-net has only 1 adaptive estimation step.}
-
-\item{nfolds}{Fold numbers of cross-validation.}
-
-\item{gammas}{Vector of candidate \code{gamma}s to use in MCP-Net.}
+\item{gammas}{Vector of candidate \code{gamma}s (the concavity parameter)
+to use in MCP-Net. Default is 3.}
 
 \item{alphas}{Vector of candidate \code{alpha}s to use in MCP-Net.}
+
+\item{tune}{Parameter tuning method for each estimation step.
+Possible options are \code{"cv"}, \code{"ebic"}, \code{"bic"},
+and \code{"aic"}. Default is \code{"cv"}.}
+
+\item{nfolds}{Fold numbers of cross-validation when \code{tune = "cv"}.}
+
+\item{ebic.gamma}{Parameter for Extended BIC penalizing
+size of the model space when \code{tune = "ebic"},
+default is \code{1}. For details, see Chen and Chen (2008).}
+
+\item{nsteps}{Maximum number of adaptive estimation steps.
+At least \code{2}, assuming adaptive MCP-net has only
+one adaptive estimation step.}
+
+\item{tune.nsteps}{Optimal step number selection method
+(aggregate the optimal model from the each step and compare).
+Options include \code{"max"} (select the final-step model directly),
+or compare these models using \code{"ebic"}, \code{"bic"}, or \code{"aic"}.
+Default is \code{"max"}.}
+
+\item{ebic.gamma.nsteps}{Parameter for Extended BIC penalizing
+size of the model space when \code{tune.nsteps = "ebic"},
+default is \code{1}.}
+
+\item{scale}{Scaling factor for adaptive weights:
+\code{weights = coefficients^(-scale)}.}
 
 \item{eps}{Convergence threshhold to use in MCP-net.}
 
 \item{max.iter}{Maximum number of iterations to use in MCP-net.}
-
-\item{gamma}{Scaling factor for adaptive weights:
-\code{weights = coefs^(-gamma)}.}
 
 \item{seed}{Two random seeds for cross-validation fold division
 in two estimation steps.}
@@ -51,8 +71,8 @@ with the number of CPU cores before calling this function.}
 \item{verbose}{Should we print out the estimation progress?}
 }
 \value{
-List of coefficients \code{beta} and
-\code{ncvreg} model object \code{model}.
+List of model coefficients, \code{ncvreg} model object,
+and the optimal parameter set.
 }
 \description{
 Multi-Step Adaptive MCP-Net
@@ -63,7 +83,7 @@ dat = msaenet.sim.gaussian(n = 150, p = 500, rho = 0.6,
                            seed = 1001)
 
 msamnet.fit = msamnet(dat$x.tr, dat$y.tr,
-                      gammas = 3, alphas = seq(0.3, 0.9, 0.3),
+                      alphas = seq(0.3, 0.9, 0.3),
                       nsteps = 3L, seed = 1003)
 
 print(msamnet.fit)
@@ -75,6 +95,6 @@ msaenet.rmse(dat$y.te, msamnet.pred)
 plot(msamnet.fit)
 }
 \author{
-Nan Xiao <\url{http://nanx.me}>
+Nan Xiao <\url{https://nanx.me}>
 }
 
