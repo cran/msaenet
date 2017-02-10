@@ -1,3 +1,10 @@
+# msaenet 2.3 (2017-02-09)
+
+## Improvements
+
+- Reduced model saturation cases and improved speed at the initialization step for MCP-net and SCAD-net based models when `init = "ridge"`, by using the ridge estimation implementation from `glmnet`. As a benefit, we now have a more aligned baseline for the comparison between elastic-net based models and MCP-net/SCAD-net based models when `init = "ridge"`.
+- Style improvements in code and examples: reduced whitespace with a new formatting scheme.
+
 # msaenet 2.2 (2017-02-02)
 
 ## New Features

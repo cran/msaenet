@@ -12,11 +12,11 @@
 
 <meta name="author" content="Nan Xiao &lt;https://nanx.me&gt;" />
 
-<meta name="date" content="2017-02-01" />
+<meta name="date" content="2017-02-09" />
 
 <title>A Quick Introduction to msaenet</title>
 
-<link href="data:text/css; charset=utf-8,%40font%2Dface%20%7B%0A%20%20font%2Dfamily%3A%20%27Lato%27%3B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20400%3B%0A%20%20src%3A%20local%28%27Lato%20Regular%27%29%2C%20local%28%27Lato%2DRegular%27%29%2C%20url%28https%3A%2F%2Ffonts%2Egstatic%2Ecom%2Fs%2Flato%2Fv11%2Fv0SdcGFAl2aezM9Vq%5FaFTQ%2Ettf%29%20format%28%27truetype%27%29%3B%0A%7D%0A%40font%2Dface%20%7B%0A%20%20font%2Dfamily%3A%20%27Lato%27%3B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20700%3B%0A%20%20src%3A%20local%28%27Lato%20Bold%27%29%2C%20local%28%27Lato%2DBold%27%29%2C%20url%28https%3A%2F%2Ffonts%2Egstatic%2Ecom%2Fs%2Flato%2Fv11%2FDvlFBScY1r%2DFMtZSYIYoYw%2Ettf%29%20format%28%27truetype%27%29%3B%0A%7D%0A" rel="stylesheet" type="text/css">
+<link href="data:text/css; charset=utf-8,%40font%2Dface%20%7B%0A%20%20font%2Dfamily%3A%20%27Lato%27%3B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20400%3B%0A%20%20src%3A%20local%28%27Lato%20Regular%27%29%2C%20local%28%27Lato%2DRegular%27%29%2C%20url%28https%3A%2F%2Ffonts%2Egstatic%2Ecom%2Fs%2Flato%2Fv13%2Fv0SdcGFAl2aezM9Vq%5FaFTQ%2Ettf%29%20format%28%27truetype%27%29%3B%0A%7D%0A%40font%2Dface%20%7B%0A%20%20font%2Dfamily%3A%20%27Lato%27%3B%0A%20%20font%2Dstyle%3A%20normal%3B%0A%20%20font%2Dweight%3A%20700%3B%0A%20%20src%3A%20local%28%27Lato%20Bold%27%29%2C%20local%28%27Lato%2DBold%27%29%2C%20url%28https%3A%2F%2Ffonts%2Egstatic%2Ecom%2Fs%2Flato%2Fv13%2FDvlFBScY1r%2DFMtZSYIYoYw%2Ettf%29%20format%28%27truetype%27%29%3B%0A%7D%0A" rel="stylesheet" type="text/css">
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -71,7 +71,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Quick Introduction to msaenet</h1>
 <h4 class="author"><em>Nan Xiao &lt;<a href="https://nanx.me" class="uri">https://nanx.me</a>&gt;</em></h4>
-<h4 class="date"><em>2017-02-01</em></h4>
+<h4 class="date"><em>2017-02-09</em></h4>
 
 
 <div id="TOC">
@@ -92,16 +92,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Let’s load the package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;msaenet&quot;</span>)</code></pre></div>
 <p>First, we generate some simulated data under a setting often used for testing high-dimensional linear models, with the function <code>msaenet.sim.gaussian()</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">msaenet.sim.gaussian</span>(<span class="dt">n =</span> <span class="dv">150</span>, <span class="dt">p =</span> <span class="dv">500</span>, <span class="dt">rho =</span> <span class="fl">0.7</span>,
-                           <span class="dt">coef =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="dt">snr =</span> <span class="dv">3</span>, <span class="dt">p.train =</span> <span class="fl">0.7</span>,
-                           <span class="dt">seed =</span> <span class="dv">1001</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">msaenet.sim.gaussian</span>(
+  <span class="dt">n =</span> <span class="dv">150</span>, <span class="dt">p =</span> <span class="dv">500</span>, <span class="dt">rho =</span> <span class="fl">0.7</span>,
+  <span class="dt">coef =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="dt">snr =</span> <span class="dv">3</span>, <span class="dt">p.train =</span> <span class="fl">0.7</span>,
+  <span class="dt">seed =</span> <span class="dv">1001</span>)</code></pre></div>
 <p>The parameter <code>rho</code> controls the degree of correlation among the variables. The parameter <code>coef</code> sets the coefficients of the “true” variables, and in this case, the first 5 variables will have coefficient 1 while the other 495 variables will have coefficient 0. <code>snr</code> represents the designated signal-to-noise ratio (SNR) in the simulated data. Parameter <code>p.train</code> decides the proportion of the training set (relative to the total number of observations <code>n</code>).</p>
 <p>To generate simulation data for the other types of generalized linear models supported by <code>msaenet</code>, simply use <code>msaenet.sim.binomial()</code> (logistic regression), <code>msaenet.sim.cox()</code> (Cox regression), or <code>msaenet.sim.poisson()</code> (Poisson regression).</p>
 <p>The returned object <code>dat</code> contains both the training and test set. We will only use the training set to do the modeling (parameter tuning and model fitting), and then evaluate the model’s performance on the test set independently.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.fit =<span class="st"> </span><span class="kw">msaenet</span>(dat$x.tr, dat$y.tr,
-                      <span class="dt">alphas =</span> <span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>),
-                      <span class="dt">nsteps =</span> 10L, <span class="dt">tune.nsteps =</span> <span class="st">&quot;ebic&quot;</span>,
-                      <span class="dt">seed   =</span> <span class="dv">1005</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.fit =<span class="st"> </span><span class="kw">msaenet</span>(
+  dat$x.tr, dat$y.tr,
+  <span class="dt">alphas =</span> <span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>),
+  <span class="dt">nsteps =</span> 10L, <span class="dt">tune.nsteps =</span> <span class="st">&quot;ebic&quot;</span>,
+  <span class="dt">seed   =</span> <span class="dv">1005</span>)</code></pre></div>
 <p>The parameter <code>alphas</code> sets the alpha tuning grid for elastic-net in all adaptive estimation steps. <code>nsteps</code> indicates how many adaptive estimation steps should be used.</p>
 <p>By default, the internal parameter tuning is done by k-fold cross-validation, and the parameters which produce the minimum prediction errors will be selected. You could also set <code>parallel = TRUE</code> and run</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(doParallel)
