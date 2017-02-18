@@ -1,3 +1,10 @@
+# msaenet 2.4 (2017-02-17)
+
+## Improvements
+
+- Improved graphical details for coefficient path plots, following the general graphic style in the ESL (*The Elements of Statistical Learning*) book.
+- More options available in `plot.msaenet()` for extra flexibility: it is now possible to set important properties of the label appearance such as position, offset, font size, and axis titles via the new arguments `label.pos`, `label.offset`, `label.cex`, `xlab`, and `ylab`.
+
 # msaenet 2.3 (2017-02-09)
 
 ## Improvements

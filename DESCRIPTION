@@ -1,7 +1,7 @@
 Package: msaenet
 Type: Package
 Title: Multi-Step Adaptive Estimation Methods for Sparse Regressions
-Version: 2.3
+Version: 2.4
 Authors@R: c(person("Nan", "Xiao", email = "me@nanx.me", role = c("aut", "cre")))
 Maintainer: Nan Xiao <me@nanx.me>
 Description: Multi-step adaptive elastic-net (MSAENet) algorithm for
@@ -18,9 +18,9 @@ BugReports: https://github.com/road2stat/msaenet/issues
 Depends: R (>= 3.0.2)
 Imports: glmnet, ncvreg (>= 3.8-0), foreach, mvtnorm, survival, Matrix
 Suggests: knitr, rmarkdown, doParallel
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-02-10 04:16:19 UTC; jimmy
+Packaged: 2017-02-17 21:51:32 UTC; jimmy
 Author: Nan Xiao [aut, cre]
 Repository: CRAN
-Date/Publication: 2017-02-10 06:08:07
+Date/Publication: 2017-02-18 09:41:24
