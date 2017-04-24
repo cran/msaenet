@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Nan Xiao &lt;https://nanx.me&gt;" />
 
-<meta name="date" content="2017-03-24" />
+<meta name="date" content="2017-04-23" />
 
 <title>A Quick Introduction to msaenet</title>
 
@@ -71,7 +71,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">A Quick Introduction to msaenet</h1>
 <h4 class="author"><em>Nan Xiao &lt;<a href="https://nanx.me" class="uri">https://nanx.me</a>&gt;</em></h4>
-<h4 class="date"><em>2017-03-24</em></h4>
+<h4 class="date"><em>2017-04-23</em></h4>
 
 
 <div id="TOC">
@@ -100,7 +100,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>To generate simulation data for the other types of generalized linear models supported by <code>msaenet</code>, simply use <code>msaenet.sim.binomial()</code> (logistic regression), <code>msaenet.sim.cox()</code> (Cox regression), or <code>msaenet.sim.poisson()</code> (Poisson regression).</p>
 <p>The returned object <code>dat</code> contains both the training and test set. We will only use the training set to do the modeling (parameter tuning and model fitting), and then evaluate the model’s performance on the test set independently.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.fit =<span class="st"> </span><span class="kw">msaenet</span>(
-  dat$x.tr, dat$y.tr,
+  dat<span class="op">$</span>x.tr, dat<span class="op">$</span>y.tr,
   <span class="dt">alphas =</span> <span class="kw">seq</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>),
   <span class="dt">nsteps =</span> 10L, <span class="dt">tune.nsteps =</span> <span class="st">&quot;ebic&quot;</span>,
   <span class="dt">seed   =</span> <span class="dv">1005</span>)</code></pre></div>
@@ -111,7 +111,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>before calling this function to make the parameter tuning run in parallel. This will probably save some time if the <code>alphas</code> grid is denser and the data size is larger.</p>
 <p>To select the optimal model in each estimation step with a different criterion, use the argument <code>tune</code>. Options include <code>&quot;cv&quot;</code> (k-fold cross-validation, default), <code>&quot;aic&quot;</code> (AIC), <code>&quot;bic&quot;</code> (BIC), and <code>&quot;ebic&quot;</code> (Extened BIC). Similarly, use <code>tune.nsteps</code> to specify the criterion for selecting the optimal estimation step (the optimal model from all steps), options include <code>&quot;max&quot;</code> (select the final-step, default), <code>&quot;aic&quot;</code>, <code>&quot;bic&quot;</code>, and <code>&quot;ebic&quot;</code>.</p>
 <p>Let’s inspect the fitted model, by looking into the best step and the selected variables (variables with non-zero coefficients), and the number of false positive selections/true positive selections:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.fit$best.step</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.fit<span class="op">$</span>best.step</code></pre></div>
 <pre><code>## [1] 8</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.nzv</span>(msaenet.fit)</code></pre></div>
 <pre><code>## [1]   2   3   4   5 114 379 464</code></pre>
@@ -149,15 +149,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 
 ## [[11]]
 ## [1]   2   3   4   5 114 379 464</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.fp</span>(msaenet.fit, <span class="dv">1</span>:<span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.fp</span>(msaenet.fit, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.tp</span>(msaenet.fit, <span class="dv">1</span>:<span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.tp</span>(msaenet.fit, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>Next, we make predictions on the test set using the fitted model, and compute some evaluation metrics, such as RMSE and MAE:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.pred =<span class="st"> </span><span class="kw">predict</span>(msaenet.fit, dat$x.te)
-<span class="kw">msaenet.rmse</span>(dat$y.te, msaenet.pred)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">msaenet.pred =<span class="st"> </span><span class="kw">predict</span>(msaenet.fit, dat<span class="op">$</span>x.te)
+<span class="kw">msaenet.rmse</span>(dat<span class="op">$</span>y.te, msaenet.pred)</code></pre></div>
 <pre><code>## [1] 2.284905</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.mae</span>(dat$y.te, msaenet.pred)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msaenet.mae</span>(dat<span class="op">$</span>y.te, msaenet.pred)</code></pre></div>
 <pre><code>## [1] 1.752406</code></pre>
 <p>A coefficient plot that shows the coefficient changes of all the variables across every adaptive estimation step:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(msaenet.fit, <span class="dt">label =</span> <span class="ot">TRUE</span>)</code></pre></div>

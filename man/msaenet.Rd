@@ -9,7 +9,8 @@ msaenet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
   tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
   rule = c("lambda.min", "lambda.1se"), ebic.gamma = 1, nsteps = 2L,
   tune.nsteps = c("max", "ebic", "bic", "aic"), ebic.gamma.nsteps = 1,
-  scale = 1, seed = 1001, parallel = FALSE, verbose = FALSE)
+  scale = 1, lower.limits = -Inf, upper.limits = Inf, seed = 1001,
+  parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{Data matrix.}
@@ -59,8 +60,13 @@ default is \code{1}.}
 \item{scale}{Scaling factor for adaptive weights:
 \code{weights = coefficients^(-scale)}.}
 
-\item{seed}{Two random seeds for cross-validation fold division
-in two estimation steps.}
+\item{lower.limits}{Lower limits for coefficients.
+Default is \code{-Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
+
+\item{upper.limits}{Upper limits for coefficients.
+Default is \code{Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
+
+\item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
 default is {FALSE}. To enable parallel tuning, load the
@@ -95,11 +101,12 @@ msaenet.pred = predict(msaenet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, msaenet.pred)
 plot(msaenet.fit)
 }
+\author{
+Nan Xiao <\url{https://nanx.me}>
+}
 \references{
 Nan Xiao and Qing-Song Xu. (2015). Multi-step adaptive elastic-net:
 reducing false positives in high-dimensional variable selection.
 \emph{Journal of Statistical Computation and Simulation} 85(18), 3755--3765.
 }
-\author{
-Nan Xiao <\url{https://nanx.me}>
-}
+

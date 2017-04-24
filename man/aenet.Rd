@@ -8,7 +8,8 @@ aenet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
   init = c("enet", "ridge"), alphas = seq(0.05, 0.95, 0.05),
   tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
   rule = c("lambda.min", "lambda.1se"), ebic.gamma = 1, scale = 1,
-  seed = 1001, parallel = FALSE, verbose = FALSE)
+  lower.limits = -Inf, upper.limits = Inf, seed = 1001,
+  parallel = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{x}{Data matrix.}
@@ -42,6 +43,12 @@ default is \code{1}. For details, see Chen and Chen (2008).}
 
 \item{scale}{Scaling factor for adaptive weights:
 \code{weights = coefficients^(-scale)}.}
+
+\item{lower.limits}{Lower limits for coefficients.
+Default is \code{-Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
+
+\item{upper.limits}{Upper limits for coefficients.
+Default is \code{Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
 
 \item{seed}{Random seed for cross-validation fold division.}
 
@@ -77,11 +84,12 @@ aenet.pred = predict(aenet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, aenet.pred)
 plot(aenet.fit)
 }
+\author{
+Nan Xiao <\url{https://nanx.me}>
+}
 \references{
 Zou, Hui, and Hao Helen Zhang. (2009).
 On the adaptive elastic-net with a diverging number of parameters.
 \emph{The Annals of Statistics} 37(4), 1733--1751.
 }
-\author{
-Nan Xiao <\url{https://nanx.me}>
-}
+

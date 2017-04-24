@@ -1,3 +1,9 @@
+# msaenet 2.6 (2017-04-23)
+
+## Improvements
+
+- Added two arguments `lower.limits` and `upper.limits` to support coefficient constraints in `aenet()` and `msaenet()` [[#1](https://github.com/road2stat/msaenet/issues/1)].
+
 # msaenet 2.5 (2017-03-24)
 
 ## Improvements
