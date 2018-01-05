@@ -7,7 +7,7 @@
 
 `msaenet` implements the multi-step adaptive elastic-net (MSAENet) algorithm for feature selection in high-dimensional regressions proposed in Xiao and Xu (2015) <[DOI:10.1080/00949655.2015.1016944](http://www.tandfonline.com/doi/full/10.1080/00949655.2015.1016944)> ([PDF](https://nanx.me/papers/msaenet.pdf)).
 
-Multi-step adaptive estimation based on MCP-net or SCAD-net is also supported.
+Nonconvex multi-step adaptive estimations based on MCP-net or SCAD-net are also supported.
 
 ## Paper Citation
 
@@ -65,7 +65,7 @@ devtools::install_github("road2stat/msaenet")
 
 ## Contribute
 
-To contribute to this project, please take a look at the [Contributing Guidelines](CONTRIBUTING.md) first. Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+To contribute to this project, please take a look at the [Contributing Guidelines](https://github.com/road2stat/msaenet/blob/master/CONTRIBUTING.md) first. Please note that this project is released with a [Contributor Code of Conduct](https://github.com/road2stat/msaenet/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## License
 

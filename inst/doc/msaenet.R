@@ -36,3 +36,6 @@ plot(msaenet.fit, label = TRUE)
 ## ---- fig.width = 10, fig.height = 6, out.width = 750, out.height = 450, fig.retina = 2----
 plot(msaenet.fit, type = "criterion")
 
+## ---- fig.width = 10, fig.height = 8, out.width = 750, out.height = 600, fig.retina = 2----
+plot(msaenet.fit, type = "dotplot", label = TRUE, label.cex = 1)
+
