@@ -1,7 +1,7 @@
-f11568847a9afd54df121be2f0a64f94 *DESCRIPTION
+67cca5e047c107a52c948775c02dbce2 *DESCRIPTION
 d32239bcb673463ab874e80d47fae504 *LICENSE
 8f5bd49c76f76b48c31eebea98751597 *NAMESPACE
-14625979ea2884866b32e3b55fd652e9 *NEWS.md
+d16706f929ed951ae1d68a9682c347e6 *NEWS.md
 97aad4a336c53fc4c828f9aea1efc892 *R/aenet.R
 677d1b7a1f5317e588dfa5a1c61dfcc0 *R/amnet.R
 8b8745dbe6c1c9e1f29b22ca9321791e *R/asnet.R
@@ -18,12 +18,12 @@ bbaa0f94601d7b4f094f6fafb0484214 *R/msasnet.R
 cf09df30f68bed90f0cb62138a4bd8d9 *R/plot-msaenet.R
 105ad03d254c568ce4d1ad60c31dc479 *R/predict-msaenet.R
 69464e8be781216eab19b2d022ee6abc *R/print-msaenet.R
-82f92bfc09d4e2c2856d1c651d69bf19 *README.md
-29d21d9751d2c1731b505c8ec2353231 *build/vignette.rds
+2ce2f09367e4bfaefa20d3b210953873 *README.md
+c89aa4a1031cb1b056360c7501bbe0b8 *build/vignette.rds
 332a25720ac3a8a63bd673efbed28919 *inst/CITATION
 add673e7fbe5bf9f654c440fe8bbb7e8 *inst/doc/msaenet.R
 0a8fafaba73e5123330bab135f9220a9 *inst/doc/msaenet.Rmd
-7bc19f4203b35ab33d5497316b16020f *inst/doc/msaenet.html
+7c5db628f4e992fb99465336fae7e509 *inst/doc/msaenet.html
 64357c4df306acbce8687310f84604d2 *man/aenet.Rd
 a8add3f34ef0b9797e49aa24c2d2ecda *man/amnet.Rd
 a615956a47915e8144c422844b847eeb *man/asnet.Rd

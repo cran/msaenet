@@ -1,7 +1,7 @@
 Package: msaenet
 Type: Package
 Title: Multi-Step Adaptive Estimation Methods for Sparse Regressions
-Version: 2.8
+Version: 2.9
 Authors@R: c(
     person("Nan", "Xiao", email = "me@nanx.me", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0250-5673")),
@@ -13,7 +13,7 @@ Description: Multi-step adaptive elastic-net (MSAENet) algorithm for
     with support for multi-step adaptive MCP-net (MSAMNet) and
     multi-step adaptive SCAD-net (MSASNet) methods.
 License: GPL-3 | file LICENSE
-URL: https://msaenet.com, https://github.com/road2stat/msaenet
+URL: https://nanx.me/msaenet/, https://github.com/road2stat/msaenet
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
@@ -23,8 +23,8 @@ Imports: glmnet, ncvreg (>= 3.8-0), foreach, mvtnorm, survival, Matrix
 Suggests: knitr, rmarkdown, doParallel
 RoxygenNote: 6.0.1.9000
 NeedsCompilation: no
-Packaged: 2018-01-05 13:16:20 UTC; nanx
-Author: Nan Xiao [aut, cre] (0000-0002-0250-5673),
+Packaged: 2018-05-14 01:46:54 UTC; nanx
+Author: Nan Xiao [aut, cre] (<https://orcid.org/0000-0002-0250-5673>),
   Qing-Song Xu [aut]
 Repository: CRAN
-Date/Publication: 2018-01-05 13:33:25 UTC
+Date/Publication: 2018-05-14 04:12:18 UTC
