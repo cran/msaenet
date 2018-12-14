@@ -9,7 +9,8 @@ msaenet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
   tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
   rule = c("lambda.min", "lambda.1se"), ebic.gamma = 1, nsteps = 2L,
   tune.nsteps = c("max", "ebic", "bic", "aic"), ebic.gamma.nsteps = 1,
-  scale = 1, lower.limits = -Inf, upper.limits = Inf, seed = 1001,
+  scale = 1, lower.limits = -Inf, upper.limits = Inf,
+  penalty.factor.init = rep(1, ncol(x)), seed = 1001,
   parallel = FALSE, verbose = FALSE)
 }
 \arguments{
@@ -66,6 +67,13 @@ Default is \code{-Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
 \item{upper.limits}{Upper limits for coefficients.
 Default is \code{Inf}. For details, see \code{\link[glmnet]{glmnet}}.}
 
+\item{penalty.factor.init}{The multiplicative factor for the penalty
+applied to each coefficient in the initial estimation step. This is
+useful for incorporating prior information about variable weights,
+for example, emphasizing specific clinical variables. To make certain
+variables more likely to be selected, assign a smaller value.
+Default is \code{rep(1, ncol(x))}.}
+
 \item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
@@ -83,21 +91,23 @@ and the optimal parameter set.
 Multi-Step Adaptive Elastic-Net
 }
 \examples{
-dat = msaenet.sim.gaussian(
+dat <- msaenet.sim.gaussian(
   n = 150, p = 500, rho = 0.6,
   coef = rep(1, 5), snr = 2, p.train = 0.7,
-  seed = 1001)
+  seed = 1001
+)
 
-msaenet.fit = msaenet(
+msaenet.fit <- msaenet(
   dat$x.tr, dat$y.tr,
   alphas = seq(0.2, 0.8, 0.2),
-  nsteps = 3L, seed = 1003)
+  nsteps = 3L, seed = 1003
+)
 
 print(msaenet.fit)
 msaenet.nzv(msaenet.fit)
 msaenet.fp(msaenet.fit, 1:5)
 msaenet.tp(msaenet.fit, 1:5)
-msaenet.pred = predict(msaenet.fit, dat$x.te)
+msaenet.pred <- predict(msaenet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, msaenet.pred)
 plot(msaenet.fit)
 }

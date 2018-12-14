@@ -5,10 +5,11 @@
 \title{Multi-Step Adaptive SCAD-Net}
 \usage{
 msasnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("snet", "ridge"), gammas = 3.7, alphas = seq(0.05, 0.95, 0.05),
-  tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L, ebic.gamma = 1,
-  nsteps = 2L, tune.nsteps = c("max", "ebic", "bic", "aic"),
-  ebic.gamma.nsteps = 1, scale = 1, eps = 1e-04, max.iter = 10000L,
+  init = c("snet", "ridge"), gammas = 3.7, alphas = seq(0.05, 0.95,
+  0.05), tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
+  ebic.gamma = 1, nsteps = 2L, tune.nsteps = c("max", "ebic", "bic",
+  "aic"), ebic.gamma.nsteps = 1, scale = 1, eps = 1e-04,
+  max.iter = 10000L, penalty.factor.init = rep(1, ncol(x)),
   seed = 1001, parallel = FALSE, verbose = FALSE)
 }
 \arguments{
@@ -60,6 +61,13 @@ default is \code{1}.}
 
 \item{max.iter}{Maximum number of iterations to use in SCAD-net.}
 
+\item{penalty.factor.init}{The multiplicative factor for the penalty
+applied to each coefficient in the initial estimation step. This is
+useful for incorporating prior information about variable weights,
+for example, emphasizing specific clinical variables. To make certain
+variables more likely to be selected, assign a smaller value.
+Default is \code{rep(1, ncol(x))}.}
+
 \item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
@@ -77,21 +85,23 @@ and the optimal parameter set.
 Multi-Step Adaptive SCAD-Net
 }
 \examples{
-dat = msaenet.sim.gaussian(
+dat <- msaenet.sim.gaussian(
   n = 150, p = 500, rho = 0.6,
   coef = rep(1, 5), snr = 2, p.train = 0.7,
-  seed = 1001)
+  seed = 1001
+)
 
-msasnet.fit = msasnet(
+msasnet.fit <- msasnet(
   dat$x.tr, dat$y.tr,
   alphas = seq(0.3, 0.9, 0.3),
-  nsteps = 3L, seed = 1003)
+  nsteps = 3L, seed = 1003
+)
 
 print(msasnet.fit)
 msaenet.nzv(msasnet.fit)
 msaenet.fp(msasnet.fit, 1:5)
 msaenet.tp(msasnet.fit, 1:5)
-msasnet.pred = predict(msasnet.fit, dat$x.te)
+msasnet.pred <- predict(msasnet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, msasnet.pred)
 plot(msasnet.fit)
 }

@@ -6,8 +6,9 @@
 \usage{
 \method{plot}{msaenet}(x, type = c("coef", "criterion", "dotplot"),
   nsteps = NULL, highlight = TRUE, col = NULL, label = FALSE,
-  label.vars = NULL, label.pos = 2, label.offset = 0.3, label.cex = 0.7,
-  label.srt = 90, xlab = NULL, ylab = NULL, abs = FALSE, ...)
+  label.vars = NULL, label.pos = 2, label.offset = 0.3,
+  label.cex = 0.7, label.srt = 90, xlab = NULL, ylab = NULL,
+  abs = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{msaenet} produced
@@ -64,16 +65,18 @@ Default is \code{FALSE}.}
 Plot msaenet model objects.
 }
 \examples{
-dat = msaenet.sim.gaussian(
+dat <- msaenet.sim.gaussian(
   n = 150, p = 500, rho = 0.6,
   coef = rep(1, 5), snr = 2, p.train = 0.7,
-  seed = 1001)
+  seed = 1001
+)
 
-msasnet.fit = msasnet(
+msasnet.fit <- msasnet(
   dat$x.tr, dat$y.tr,
   alphas = seq(0.2, 0.8, 0.2),
   nsteps = 5L, tune.nsteps = "ebic",
-  seed = 1003)
+  seed = 1003
+)
 
 plot(msasnet.fit)
 plot(msasnet.fit, label = TRUE)

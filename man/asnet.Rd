@@ -5,9 +5,10 @@
 \title{Adaptive SCAD-Net}
 \usage{
 asnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("snet", "ridge"), gammas = 3.7, alphas = seq(0.05, 0.95, 0.05),
-  tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L, ebic.gamma = 1,
-  scale = 1, eps = 1e-04, max.iter = 10000L, seed = 1001,
+  init = c("snet", "ridge"), gammas = 3.7, alphas = seq(0.05, 0.95,
+  0.05), tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
+  ebic.gamma = 1, scale = 1, eps = 1e-04, max.iter = 10000L,
+  penalty.factor.init = rep(1, ncol(x)), seed = 1001,
   parallel = FALSE, verbose = FALSE)
 }
 \arguments{
@@ -45,6 +46,13 @@ default is \code{1}. For details, see Chen and Chen (2008).}
 
 \item{max.iter}{Maximum number of iterations to use in SCAD-net.}
 
+\item{penalty.factor.init}{The multiplicative factor for the penalty
+applied to each coefficient in the initial estimation step. This is
+useful for incorporating prior information about variable weights,
+for example, emphasizing specific clinical variables. To make certain
+variables more likely to be selected, assign a smaller value.
+Default is \code{rep(1, ncol(x))}.}
+
 \item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
@@ -62,20 +70,22 @@ and the optimal parameter set.
 Adaptive SCAD-Net
 }
 \examples{
-dat = msaenet.sim.gaussian(
+dat <- msaenet.sim.gaussian(
   n = 150, p = 500, rho = 0.6,
   coef = rep(1, 5), snr = 2, p.train = 0.7,
-  seed = 1001)
+  seed = 1001
+)
 
-asnet.fit = asnet(
+asnet.fit <- asnet(
   dat$x.tr, dat$y.tr,
-  alphas = seq(0.2, 0.8, 0.2), seed = 1002)
+  alphas = seq(0.2, 0.8, 0.2), seed = 1002
+)
 
 print(asnet.fit)
 msaenet.nzv(asnet.fit)
 msaenet.fp(asnet.fit, 1:5)
 msaenet.tp(asnet.fit, 1:5)
-asnet.pred = predict(asnet.fit, dat$x.te)
+asnet.pred <- predict(asnet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, asnet.pred)
 plot(asnet.fit)
 }

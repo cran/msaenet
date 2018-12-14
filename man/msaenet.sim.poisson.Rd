@@ -5,8 +5,8 @@
 \title{Generate Simulation Data for Benchmarking Sparse Regressions
 (Poisson Response)}
 \usage{
-msaenet.sim.poisson(n = 300, p = 500, rho = 0.5, coef = rep(0.2, 50),
-  snr = 1, p.train = 0.7, seed = 1001)
+msaenet.sim.poisson(n = 300, p = 500, rho = 0.5, coef = rep(0.2,
+  50), snr = 1, p.train = 0.7, seed = 1001)
 }
 \arguments{
 \item{n}{Number of observations.}
@@ -30,10 +30,11 @@ List of \code{x.tr}, \code{x.te}, \code{y.tr}, and \code{y.te}.
 Generate simulation data for benchmarking sparse Poisson regression models.
 }
 \examples{
-dat = msaenet.sim.poisson(
+dat <- msaenet.sim.poisson(
   n = 300, p = 500, rho = 0.6,
   coef = rep(1, 10), snr = 3, p.train = 0.7,
-  seed = 1001)
+  seed = 1001
+)
 
 dim(dat$x.tr)
 dim(dat$x.te)
