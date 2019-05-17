@@ -3,8 +3,8 @@ library("msaenet")
 
 ## ------------------------------------------------------------------------
 dat <- msaenet.sim.gaussian(
-  n = 150, p = 500, rho = 0.7,
-  coef = rep(1, 5), snr = 3, p.train = 0.7,
+  n = 150, p = 500, rho = 0.5,
+  coef = rep(1, 10), snr = 5, p.train = 0.7,
   seed = 1001
 )
 
@@ -24,8 +24,8 @@ msaenet.fit <- msaenet(
 msaenet.fit$best.step
 msaenet.nzv(msaenet.fit)
 msaenet.nzv.all(msaenet.fit)
-msaenet.fp(msaenet.fit, 1:5)
-msaenet.tp(msaenet.fit, 1:5)
+msaenet.fp(msaenet.fit, 1:10)
+msaenet.tp(msaenet.fit, 1:10)
 
 ## ------------------------------------------------------------------------
 msaenet.pred <- predict(msaenet.fit, dat$x.te)

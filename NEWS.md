@@ -1,8 +1,17 @@
+# msaenet 3.1 (2019-05-17)
+
+## Improvements
+
+- Added detailed signal-to-noise ratio (SNR) definition in `msaenet.sim.gaussian()`.
+- Updated the example code in the vignette to make it work better with the most recent version of glmnet (2.0-16).
+- Updated GitHub repository links due to the handle change.
+- Updated the vignette style.
+
 # msaenet 3.0 (2018-12-14)
 
 ## New Features
 
-- Added a new argument `penalty.factor.init` to support customized penalty factor applied to each coefficient in the initial estimation step. This is useful for incorporating prior information about variable weights, for example, emphasizing specific clinical variables. We thank Xin Wang from University of Michigan for this feedback [[#4](https://github.com/road2stat/msaenet/issues/4)].
+- Added a new argument `penalty.factor.init` to support customized penalty factor applied to each coefficient in the initial estimation step. This is useful for incorporating prior information about variable weights, for example, emphasizing specific clinical variables. We thank Xin Wang from University of Michigan for this feedback [[#4](https://github.com/nanxstats/msaenet/issues/4)].
 
 # msaenet 2.9 (2018-05-13)
 
@@ -26,7 +35,7 @@
 
 ## Improvements
 
-- Added two arguments `lower.limits` and `upper.limits` to support coefficient constraints in `aenet()` and `msaenet()` [[#1](https://github.com/road2stat/msaenet/issues/1)].
+- Added two arguments `lower.limits` and `upper.limits` to support coefficient constraints in `aenet()` and `msaenet()` [[#1](https://github.com/nanxstats/msaenet/issues/1)].
 
 # msaenet 2.5 (2017-03-24)
 
