@@ -4,12 +4,24 @@
 \alias{amnet}
 \title{Adaptive MCP-Net}
 \usage{
-amnet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("mnet", "ridge"), gammas = 3, alphas = seq(0.05, 0.95,
-  0.05), tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
-  ebic.gamma = 1, scale = 1, eps = 1e-04, max.iter = 10000L,
-  penalty.factor.init = rep(1, ncol(x)), seed = 1001,
-  parallel = FALSE, verbose = FALSE)
+amnet(
+  x,
+  y,
+  family = c("gaussian", "binomial", "poisson", "cox"),
+  init = c("mnet", "ridge"),
+  gammas = 3,
+  alphas = seq(0.05, 0.95, 0.05),
+  tune = c("cv", "ebic", "bic", "aic"),
+  nfolds = 5L,
+  ebic.gamma = 1,
+  scale = 1,
+  eps = 1e-04,
+  max.iter = 10000L,
+  penalty.factor.init = rep(1, ncol(x)),
+  seed = 1001,
+  parallel = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{x}{Data matrix.}
@@ -56,7 +68,7 @@ Default is \code{rep(1, ncol(x))}.}
 \item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
-default is {FALSE}. To enable parallel tuning, load the
+default is \code{FALSE}. To enable parallel tuning, load the
 \code{doParallel} package and run \code{registerDoParallel()}
 with the number of CPU cores before calling this function.}
 

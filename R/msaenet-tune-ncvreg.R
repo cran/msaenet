@@ -16,25 +16,23 @@
 #' large model spaces. \emph{Biometrika} 95(3), 759--771.
 #'
 #' @keywords internal
-
 msaenet.tune.ncvreg <- function(
-  x, y, family, penalty,
-  gammas, alphas,
-  tune,
-  nfolds,
-  ebic.gamma,
-  eps, max.iter,
-  seed, parallel, ...) {
-
+    x, y, family, penalty,
+    gammas, alphas,
+    tune,
+    nfolds,
+    ebic.gamma,
+    eps, max.iter,
+    seed, parallel, ...) {
   if (tune == "cv") {
     if (!parallel) {
       model.list <- vector("list", length(gammas))
-      for (k in 1L:length(model.list)) {
+      for (k in seq_along(model.list)) {
         model.list[[k]] <- vector("list", length(alphas))
       }
 
-      for (i in 1L:length(gammas)) {
-        for (j in 1L:length(alphas)) {
+      for (i in seq_along(gammas)) {
+        for (j in seq_along(alphas)) {
           set.seed(seed)
           if (family == "cox") {
             model.list[[i]][[j]] <- cv.ncvsurv(
@@ -93,12 +91,12 @@ msaenet.tune.ncvreg <- function(
   } else {
     if (!parallel) {
       model.list <- vector("list", length(gammas))
-      for (k in 1L:length(model.list)) {
+      for (k in seq_along(model.list)) {
         model.list[[k]] <- vector("list", length(alphas))
       }
 
-      for (i in 1L:length(gammas)) {
-        for (j in 1L:length(alphas)) {
+      for (i in seq_along(gammas)) {
+        for (j in seq_along(alphas)) {
           set.seed(seed)
           if (family == "cox") {
             model.list[[i]][[j]] <- ncvsurv(
@@ -203,8 +201,7 @@ msaenet.tune.ncvreg <- function(
 #' @keywords internal
 
 msaenet.tune.nsteps.ncvreg <- function(
-  model.list, tune.nsteps, ebic.gamma.nsteps) {
-
+    model.list, tune.nsteps, ebic.gamma.nsteps) {
   nmods <- length(model.list)
 
   if (tune.nsteps == "max") {
@@ -242,25 +239,33 @@ msaenet.tune.nsteps.ncvreg <- function(
   list("best.step" = best.step, "ics" = ics)
 }
 
-# wrapper for ncvreg::ncvreg and ncvreg::ncvsurv with two hotfixes
+# Wrapper for ncvreg that works around the "single lambda" warning.
+# After balancing all other options, this seems to be the simplest solution
+# without causing confusions or complications in this context (cross validation).
 .ncvnet <- function(
-  x, y, family, penalty,
-  gamma, alpha, lambda,
-  eps, max.iter, ...) {
-
+    x, y, family, penalty,
+    gamma, alpha, lambda,
+    eps, max.iter, ...) {
   if (family == "cox") {
     fit <- ncvreg::ncvsurv(
       X = x, y = y, penalty = penalty,
-      gamma = gamma, alpha = alpha, lambda = lambda,
+      gamma = gamma, alpha = alpha, lambda = c(lambda + 0.001, lambda),
       eps = eps, max.iter = max.iter, ...
     )
   } else {
     fit <- ncvreg::ncvreg(
       X = x, y = y, family = family, penalty = penalty,
-      gamma = gamma, alpha = alpha, lambda = lambda,
+      gamma = gamma, alpha = alpha, lambda = c(lambda + 0.001, lambda),
       eps = eps, max.iter = max.iter, ...
     )
   }
+
+  # Remove results corresponding to lambda + 0.001
+  fit$beta <- fit$beta[, -c(1), drop = FALSE]
+  fit$iter <- fit$iter[-c(1)]
+  fit$lambda <- fit$lambda[-c(1)]
+  fit$loss <- fit$loss[-c(1)]
+  fit$linear.predictors <- fit$linear.predictors[, -c(1), drop = FALSE]
 
   fit
 }

@@ -4,13 +4,24 @@
 \alias{aenet}
 \title{Adaptive Elastic-Net}
 \usage{
-aenet(x, y, family = c("gaussian", "binomial", "poisson", "cox"),
-  init = c("enet", "ridge"), alphas = seq(0.05, 0.95, 0.05),
-  tune = c("cv", "ebic", "bic", "aic"), nfolds = 5L,
-  rule = c("lambda.min", "lambda.1se"), ebic.gamma = 1, scale = 1,
-  lower.limits = -Inf, upper.limits = Inf,
-  penalty.factor.init = rep(1, ncol(x)), seed = 1001,
-  parallel = FALSE, verbose = FALSE)
+aenet(
+  x,
+  y,
+  family = c("gaussian", "binomial", "poisson", "cox"),
+  init = c("enet", "ridge"),
+  alphas = seq(0.05, 0.95, 0.05),
+  tune = c("cv", "ebic", "bic", "aic"),
+  nfolds = 5L,
+  rule = c("lambda.min", "lambda.1se"),
+  ebic.gamma = 1,
+  scale = 1,
+  lower.limits = -Inf,
+  upper.limits = Inf,
+  penalty.factor.init = rep(1, ncol(x)),
+  seed = 1001,
+  parallel = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{x}{Data matrix.}
@@ -61,7 +72,7 @@ Default is \code{rep(1, ncol(x))}.}
 \item{seed}{Random seed for cross-validation fold division.}
 
 \item{parallel}{Logical. Enable parallel parameter tuning or not,
-default is {FALSE}. To enable parallel tuning, load the
+default is \code{FALSE}. To enable parallel tuning, load the
 \code{doParallel} package and run \code{registerDoParallel()}
 with the number of CPU cores before calling this function.}
 

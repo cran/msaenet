@@ -18,22 +18,19 @@
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' msaenet.nzv(msaenet.fit)
-#' 
+#'
 #' # coefficients of non-zero variables
 #' coef(msaenet.fit)[msaenet.nzv(msaenet.fit)]
 msaenet.nzv <- function(object) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
-
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
   idx <- which(abs(as.vector(object$"beta")) > .Machine$double.eps)
   idx
 }
@@ -58,24 +55,23 @@ msaenet.nzv <- function(object) {
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' msaenet.nzv.all(msaenet.fit)
 msaenet.nzv.all <- function(object) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
 
   if (.is.multistep(object)) {
     n <- length(object$"beta.list")
     idx <- vector("list", n)
-    for (i in 1L:n) idx[[i]] <-
-        which(abs(as.vector(object[["beta.list"]][[i]])) > .Machine$double.eps)
+    for (i in 1L:n) {
+      idx[[i]] <- which(abs(as.vector(object[["beta.list"]][[i]])) > .Machine$double.eps)
+    }
   }
 
   if (.is.adaptive(object)) {
@@ -110,19 +106,16 @@ msaenet.nzv.all <- function(object) {
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' coef(msaenet.fit)
 coef.msaenet <- function(object, ...) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
-
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
   bhat <- as.vector(object$"beta")
   bhat
 }
@@ -149,19 +142,16 @@ coef.msaenet <- function(object, ...) {
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' msaenet.fp(msaenet.fit, 1:5)
 msaenet.fp <- function(object, true.idx) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
-
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
   length(setdiff(msaenet.nzv(object), true.idx))
 }
 
@@ -187,19 +177,16 @@ msaenet.fp <- function(object, true.idx) {
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' msaenet.fn(msaenet.fit, 1:5)
 msaenet.fn <- function(object, true.idx) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
-
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
   length(setdiff(true.idx, msaenet.nzv(object)))
 }
 
@@ -225,18 +212,15 @@ msaenet.fn <- function(object, true.idx) {
 #'   coef = rep(1, 5), snr = 2, p.train = 0.7,
 #'   seed = 1001
 #' )
-#' 
+#'
 #' msaenet.fit <- msaenet(
 #'   dat$x.tr, dat$y.tr,
 #'   alphas = seq(0.2, 0.8, 0.2),
 #'   nsteps = 3L, seed = 1003
 #' )
-#' 
+#'
 #' msaenet.tp(msaenet.fit, 1:5)
 msaenet.tp <- function(object, true.idx) {
-  if (!.is.msaenet(object)) {
-    stop('object class must be "msaenet"')
-  }
-
+  if (!.is.msaenet(object)) stop(message.object.type, call. = FALSE)
   length(intersect(msaenet.nzv(object), true.idx))
 }
