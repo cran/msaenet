@@ -1,7 +1,13 @@
 ## ----include=FALSE------------------------------------------------------------
 knitr::opts_chunk$set(
   comment = "#>",
-  collapse = TRUE
+  collapse = TRUE,
+  dpi = 300,
+  fig.retina = 2,
+  fig.width = 6,
+  fig.height = 6,
+  fig.align = "center",
+  out.width = "65%"
 )
 
 ## -----------------------------------------------------------------------------
@@ -38,12 +44,12 @@ msaenet.pred <- predict(msaenet.fit, dat$x.te)
 msaenet.rmse(dat$y.te, msaenet.pred)
 msaenet.mae(dat$y.te, msaenet.pred)
 
-## ----fig.width = 10, fig.height = 8, out.width = 750, out.height = 600, fig.retina = 2----
-plot(msaenet.fit, label = TRUE)
+## -----------------------------------------------------------------------------
+plot(msaenet.fit, label = TRUE, label.cex = 0.5)
 
-## ----fig.width = 10, fig.height = 6, out.width = 750, out.height = 450, fig.retina = 2----
+## -----------------------------------------------------------------------------
 plot(msaenet.fit, type = "criterion")
 
-## ----fig.width = 10, fig.height = 8, out.width = 750, out.height = 600, fig.retina = 2----
+## -----------------------------------------------------------------------------
 plot(msaenet.fit, type = "dotplot", label = TRUE, label.cex = 1)
 
